@@ -1,11 +1,48 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState } from 'react';
+import { Text, View, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 
 export default function App() {
+  const [isLogin, setIsLogin] = useState(true);
+
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
+      
+      <Text style={styles.title}>facebook</Text>
+
+      {/* Form Container */}
+      <View style={styles.formContainer}>
+        <TextInput
+          placeholder="Email or Phone"
+          style={styles.input}
+        />
+
+        <TextInput
+          placeholder="Password"
+          secureTextEntry
+          style={styles.input}
+        />
+
+        {!isLogin && (
+          <TextInput
+            placeholder="Confirm Password"
+            secureTextEntry
+            style={styles.input}
+          />
+        )}
+
+        <TouchableOpacity style={styles.button}>
+          <Text style={styles.buttonText}>
+            {isLogin ? "Log In" : "Sign Up"}
+          </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={() => setIsLogin(!isLogin)}>
+          <Text style={styles.switchText}>
+            {isLogin ? "Create New Account" : "Already have an account?"}
+          </Text>
+        </TouchableOpacity>
+      </View>
+
     </View>
   );
 }
@@ -13,8 +50,45 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: '#f0f2f5'
   },
+  title: {
+    fontSize: 42,
+    fontWeight: 'bold',
+    color: '#1877f2',
+    textAlign: 'center',
+    marginBottom: 30
+  },
+  formContainer: {
+    backgroundColor: '#fff',
+    width: 300,
+    height: 300,
+    alignSelf: 'center',
+    padding: 20,
+    borderRadius: 8,
+    justifyContent: 'center'
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    padding: 10,
+    marginBottom: 15,
+    borderRadius: 4
+  },
+  button: {
+    backgroundColor: '#1877f2',
+    padding: 12,
+    borderRadius: 4,
+    alignItems: 'center'
+  },
+  buttonText: {
+    color: '#fff',
+    fontWeight: 'bold'
+  },
+  switchText: {
+    marginTop: 15,
+    textAlign: 'center',
+    color: '#1877f2'
+  }
 });
