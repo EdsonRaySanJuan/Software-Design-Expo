@@ -1,94 +1,80 @@
-import React, { useState } from 'react';
-import { Text, View, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { useState } from 'react';
+import { StyleSheet, Text, View, Button, TextInput, ScrollView, Image } from 'react-native';
 
 export default function App() {
-  const [isLogin, setIsLogin] = useState(true);
+  const [enteredGoalText, setEnteredGoalText] = useState('');
+  const [courseGoals, setCourseGoals] = useState([]);
+
+  function goalInputHandler(enteredText) {
+    setEnteredGoalText(enteredText);
+  }
+
+  function addGoalHandler() {
+    setCourseGoals((currentCourseGoals) => [
+      ...currentCourseGoals,
+      enteredGoalText,
+    ]);
+    setEnteredGoalText('');
+  }
 
   return (
-    <View style={styles.container}>
-      
-      <Text style={styles.title}>facebook</Text>
-
-      {/* Form Container */}
-      <View style={styles.formContainer}>
+    <View style={styles.appContainer}>
+      <Image
+        source={{ uri: 'https://www.softo.org/imgs/blog/2023/07/1690190032univer-png.png' }}
+        style={styles.logo}
+      />
+      <View style={styles.inputContainer}>
         <TextInput
-          placeholder="Email or Phone"
-          style={styles.input}
+          placeholder="Your course goal!"
+          style={styles.textInput}
+          onChangeText={goalInputHandler}
+          value={enteredGoalText}
         />
-
-        <TextInput
-          placeholder="Password"
-          secureTextEntry
-          style={styles.input}
-        />
-
-        {!isLogin && (
-          <TextInput
-            placeholder="Confirm Password"
-            secureTextEntry
-            style={styles.input}
-          />
-        )}
-
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>
-            {isLogin ? "Log In" : "Sign Up"}
-          </Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress={() => setIsLogin(!isLogin)}>
-          <Text style={styles.switchText}>
-            {isLogin ? "Create New Account" : "Already have an account?"}
-          </Text>
-        </TouchableOpacity>
+        <Button title="ADD GOAL" onPress={addGoalHandler} />
       </View>
-
+      <ScrollView style={styles.goalsContainer}>
+        {courseGoals.map((goal) => (
+          <Text key={goal} style={styles.goalItem}>{goal}</Text>
+        ))}
+      </ScrollView>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  appContainer: {
     flex: 1,
-    justifyContent: 'center',
-    backgroundColor: '#f0f2f5'
-  },
-  title: {
-    fontSize: 42,
-    fontWeight: 'bold',
-    color: '#1877f2',
-    textAlign: 'center',
-    marginBottom: 30
-  },
-  formContainer: {
-    backgroundColor: '#fff',
-    width: 300,
-    height: 300,
-    alignSelf: 'center',
     padding: 20,
-    borderRadius: 8,
-    justifyContent: 'center'
+    backgroundColor: '#f5f5f5',
   },
-  input: {
+  logo: {
+    width: 50,
+    height: 50,
+    marginBottom: 10,
+    alignSelf: 'center',
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  textInput: {
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: '#cccccc',
     padding: 10,
-    marginBottom: 15,
-    borderRadius: 4
+    flex: 1,
+    marginRight: 10,
+    fontFamily: 'Arial',
   },
-  button: {
-    backgroundColor: '#1877f2',
-    padding: 12,
-    borderRadius: 4,
-    alignItems: 'center'
+  goalsContainer: {
+    flex: 4,
   },
-  buttonText: {
-    color: '#fff',
-    fontWeight: 'bold'
+  goalItem: {
+    marginVertical: 8,
+    padding: 10,
+    backgroundColor: '#4e9af1',
+    color: 'white',
+    borderRadius: 6,
   },
-  switchText: {
-    marginTop: 15,
-    textAlign: 'center',
-    color: '#1877f2'
-  }
 });
